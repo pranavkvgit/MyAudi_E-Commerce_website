@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details Page</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #000000, #444444);
+
+    }
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #333;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      border-top: 5px solid #f1c232; /* Audi red accent */
+    }
+    .product-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .product-image {
+      flex: 1 1 45%;
+      text-align: center;
+      padding: 10px;
+    }
+    .product-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .product-image img:hover {
+      transform: scale(1.05);
+    }
+    .product-info {
+      flex: 1 1 50%;
+      padding: 20px;
+    }
+    .product-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 15px;
+    }
+    .product-price {
+      font-size: 24px;
+      color: #e60012; /* Audi Red */
+      margin: 10px 0;
+    }
+    .product-description {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    .add-to-cart {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .add-to-cart button {
+      background-color: #f1c232;
+      color: white;
+      font-size: 18px;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .add-to-cart button:hover {
+      background-color: #ffbf00; /* Darker red on hover */
+      transform: scale(1.05);
+    }
+    .add-to-cart button:active {
+      transform: scale(0.95);
+    }
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 10px 0;
+    }
+
+    .quantity-btn {
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+    }
+
+    .quantity-btn:hover {
+        background-color: #555;
+        transform: scale(1.1);
+    }
+
+    .quantity-btn:active {
+        background-color: #222;
+        transform: scale(0.95);
+    }
+
+    #quantity {
+        font-size: 18px;
+        border: 2px solid #f1c232;
+        border-radius: 5px;
+        padding: 8px;
+        text-align: center;
+        width: 50px;
+    }
+
+    .quantity-controls:hover .quantity-btn {
+        background-color: #555;
+        color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <form method="post" action="{% url 'add_to_cart' %}">
+    {% csrf_token %}
+    <div class="container">
+      <div class="product-details">
+        <!-- Product Image -->
+        <div class="product-image">
+          <img src="{{ product.image.url }}" alt="{{ product.pname }}">
+        </div>
+        <!-- Product Info -->
+        <div class="product-info">
+          <h1 class="product-title">{{ product.pname }}</h1>
+          <p class="product-price">Price: &#8377;<span id="unit-price">{{ product.price }}</span></p>
+          <p class="product-description">
+            {{ product.discription }}
+          </p>
+          <div class="quantity-controls">
+            <label for="quantity" style="font-size: 16px; color: #333;">Quantity:</label>
+            <button id="decrease" class="quantity-btn" type="button">-</button>
+            <input
+              name="quantity"
+              type="number"
+              id="quantity"
+              value="1"
+              min="1"
+              readonly
+              style="width: 50px; text-align: center; font-size: 16px;"
+            />
+            <button id="increase" class="quantity-btn" type="button">+</button>
+          </div>
+          <p class="total-price">
+            Total Price: &#8377;<span id="total-price" name="total">{{ product.price }}</span>
+          </p>
+          <div class="add-to-cart">
+            <input type="submit" value="Add to Cart" style="background-color: #f1c232; color: white; border: none; padding: 12px 30px; border-radius: 5px; cursor: pointer; font-size: 18px;">
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Get references to elements
+      const unitPrice = parseFloat(document.getElementById("unit-price").innerText);
+      const quantityInput = document.getElementById("quantity");
+      const totalPriceElement = document.getElementById("total-price");
+      const increaseBtn = document.getElementById("increase");
+      const decreaseBtn = document.getElementById("decrease");
+
+      // Function to update total price
+      function updateTotalPrice() {
+        const quantity = parseInt(quantityInput.value);
+        const totalPrice = unitPrice * quantity;
+        totalPriceElement.innerText = totalPrice.toFixed(2); // Display total price with two decimals
+      }
+
+      // Event listeners for buttons
+      increaseBtn.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevent form submission
+        quantityInput.value = parseInt(quantityInput.value) + 1; // Increment quantity
+        updateTotalPrice();
+      });
+
+      decreaseBtn.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevent form submission
+        if (quantityInput.value > 1) {
+          quantityInput.value = parseInt(quantityInput.value) - 1; // Decrement quantity
+          updateTotalPrice();
+        }
+      });
+    </script>
+  </form>
+</body>
+</html>

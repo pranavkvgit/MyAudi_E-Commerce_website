@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #1d1f21;
+            color: #f5f5f5;
+        }
+
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f1c232;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            display: inline;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .navbar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #333; 
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #f1c232; 
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 16px;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 12px 15px;
+            border: 1px solid #444;
+        }
+
+        table th {
+            background-color: #457b9d; /* Audi Blue */
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #444;
+        }
+
+        table tr:hover {
+            background-color: #555;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .action-buttons a {
+            text-decoration: none;
+            color: white;
+            background-color: #cabe54;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            margin: 0 0.5rem;
+            transition: 0.3s ease-in-out;
+            font-weight: bold;
+        }
+
+        .action-buttons a:hover {
+            background-color: #efcf19;
+        }
+
+        .cancel-btn {
+            background-color: #e63946; 
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            background-color: #ff4d4d;
+        }
+
+        .no-orders {
+            text-align: center;
+            color: #888;
+            font-size: 18px;
+            margin: 2rem 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            .action-buttons a, .cancel-btn {
+                font-size: 14px;
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">MyAudi</div>
+    <ul>
+        <li><a href="{% url 'user_page' %}">Home</a></li>
+        <li><a href="{% url 'product_view_page' %}">Products</a></li>
+        <li><a href="{% url 'cart_page' %}">Cart</a></li>
+    </ul>
+</div>
+
+<div class="container">
+    <h1>Your Orders</h1>
+    
+    {% if orders %}
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>Action</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.pname }}</td>  
+                    <td>{{ order.qty }}</td> 
+                    <td>&#8377;{{ order.price }}</td> 
+                    <td>&#8377;{{ order.total }}</td> 
+                    <td>{{ order.date|date:"M d, Y" }}</td>
+                    <td>                           
+                        <form action="{% url 'delete_order' order.id %}" method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="cancel-btn">Cancel</button>
+                        </form>                            
+                    </td>
+                    <td>{{ order.status }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="no-orders">No orders found. Start shopping now!</p>
+    {% endif %}
+
+    <div class="action-buttons">
+        <a href="{% url 'product_view_page' %}">Continue Shopping</a>
+    </div>
+</div>
+
+</body>
+</html>

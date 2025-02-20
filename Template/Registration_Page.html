@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and Background */
+        body {
+            font-family: 'Helvetica', sans-serif;
+            background: linear-gradient(to right, #000000, #444444);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px; /* Reduced padding */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px; /* Reduced maximum width */
+        }
+
+        /* Heading */
+        .form-container h1 {
+            font-size: 24px; /* Adjusted font size */
+            margin-bottom: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th {
+            text-align: left;
+            padding: 8px; /* Reduced padding */
+            color: #ccc;
+            font-size: 16px;
+        }
+
+        td {
+            padding: 8px; /* Reduced padding */
+            font-size: 16px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        input[type="radio"] {
+            width: auto;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        /* Button Styles */
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #f1c232; /* Audi's signature red */
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #d6b656;
+        }
+
+        /* Login Button */
+        .login-btn {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .login-btn a {
+            text-decoration: none;
+            color: white;
+            background-color: rgb(62, 57, 57);
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-btn a:hover {
+            background-color: rgb(164, 159, 159);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 15px; /* Adjusted padding for smaller screens */
+            }
+
+            input,
+            select,
+            textarea {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <form method="POST" action="{% url 'Registration_Form' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>Registration Form</h1>
+            <table>
+                <tr>
+                    <th><label for="name">Name</label></th>
+                    <td><input type="text" id="name" name="name" placeholder="Enter your full name"></td>
+                </tr>
+                <tr>
+                    <th><label for="age">Age</label></th>
+                    <td><input type="number" id="age" name="age" placeholder="Enter your age"></td>
+                </tr>
+                <tr>
+                    <th>Gender</th>
+                    <td>
+                        <div class="radio-group">
+                            <input type="radio" id="male" name="gender" value="male">
+                            <label for="male">Male</label>
+                            <input type="radio" id="female" name="gender" value="female">
+                            <label for="female">Female</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="email">Email</label></th>
+                    <td><input type="email" id="email" name="email" placeholder="example@domain.com"></td>
+                </tr>
+                <tr>
+                    <th><label for="mobile">Mobile.No</label></th>
+                    <td><input type="tel" id="mobile" name="mobile" placeholder="123-456-7890"></td>
+                </tr>
+                <tr>
+                    <th><label for="address">Address</label></th>
+                    <td><textarea id="address" name="address" rows="4" cols="30" placeholder="Enter your address"></textarea></td>
+                </tr>
+                <tr>
+                    <th><label for="location">Location</label></th>
+                    <td>
+                        <select id="location" name="location">
+                            <option value="kerala">Kerala</option>
+                            <option value="tamilnadu">Tamil Nadu</option>
+                            <option value="karnataka">Karnataka</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="username">Username</label></th>
+                    <td><input type="text" id="username" name="username" placeholder="Choose a username"></td>
+                </tr>
+                <tr>
+                    <th><label for="password">Password</label></th>
+                    <td><input type="password" id="password" name="password" placeholder="Create a password"></td>
+                </tr>
+            </table>
+            <button type="submit">Submit</button>
+        </form>
+        <div class="login-btn">
+            <a href="{% url 'Login_page2' %}">Login</a>
+        </div>
+    </div>
+</body>
+
+</html>

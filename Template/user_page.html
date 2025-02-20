@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Page</title>
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and Background */
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #1c1c1c;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #333;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .navbar h1 {
+            font-size: 36px;
+            color: #f1c232; /* Audi yellow */
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .navbar img {
+            width: 120px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .navbar a {
+            font-size: 18px;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 20px;
+            background-color: #444;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #f1c232; /* Audi yellow hover */
+            color: #1c1c1c;
+            transform: scale(1.05);
+        }
+
+        .navbar .a1 {
+            background-color: #f1c232;
+            color: #1c1c1c;
+        }
+
+        /* Page Content - Links */
+        .content {
+            padding-top: 100px; /* Space for fixed navbar */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .links-container a {
+            font-size: 24px;
+            padding: 20px 40px;
+            background-color: #444;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .links-container a:hover {
+            background-color: #f1c232;
+            color: #1c1c1c;
+            transform: scale(1.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar h1 {
+                font-size: 28px;
+            }
+
+            .navbar a {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
+
+            .links-container a {
+                font-size: 20px;
+                padding: 15px 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <img src="{% static 'images/audio-logo.png' %}" alt="Audi Logo">
+        <h1>MyAudi</h1>
+        <a class="a1" href="{% url 'Home' %}">Logout</a>
+    </div>
+    <div class="content">
+        <div class="links-container">
+            <a href="{% url 'product_view_page' %}">View Products</a>
+        </div>
+    </div>
+</body>
+
+</html>
